@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IP Pubblici vs Privati e Architettura DMZ</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; line-height: 1.6; color: #333; max-width: 900px; margin: 0 auto; padding: 20px; background-color: #f4f7f6; }
+        header { border-bottom: 3px solid #0056b3; margin-bottom: 30px; padding-bottom: 10px; }
+        h1, h2 { color: #0056b3; }
+        .info-box { background: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); margin-bottom: 20px; }
+        table { width: 100%; border-collapse: collapse; margin: 20px 0; }
+        th, td { text-align: left; padding: 12px; border: 1px solid #ddd; }
+        th { background-color: #0056b3; color: white; }
+        tr:nth-child(even) { background-color: #f2f2f2; }
+        .diagram-container { text-align: center; margin: 30px 0; background: #fff; padding: 15px; border: 1px dashed #0056b3; }
+        .diagram-placeholder { font-style: italic; color: #666; }
+        .rfc-reference { font-size: 0.9em; background: #eef; padding: 10px; border-left: 5px solid #0056b3; }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>Differenza tra Indirizzi IP Pubblici e Privati</h1>
+    <p>Guida tecnica basata sugli standard IETF e architetture di rete Cisco</p>
+</header>
+
+<section class="info-box">
+    <h2>1. IP Pubblico e Privato: Definizioni</h2>
+    <p>In una rete informatica, l'indirizzo IP funge da identificativo univoco. Tuttavia, per gestire la scarsità di indirizzi IPv4, è stata introdotta la distinzione tra ambiti pubblici e privati.</p>
+    <ul>
+        <li><strong>IP Pubblico:</strong> Raggiungibile globalmente su Internet. È assegnato dal tuo ISP e identifica il tuo router all'esterno.</li>
+        <li><strong>IP Privato:</strong> Utilizzato solo all'interno della LAN (casa o ufficio). Non è visibile dall'esterno grazie al protocollo <strong>NAT (Network Address Translation)</strong>.</li>
+    </ul>
+</section>
+
+<section class="info-box">
+    <h2>2. Gli standard RFC 1918</h2>
+    <p>La documentazione ufficiale definisce tre intervalli specifici per le reti private che non devono mai essere instradati sui nodi di backbone di Internet:</p>
+    <table>
+        <thead>
+            <tr>
+                <th>Classe</th>
+                <th>Intervallo IP</th>
+                <th>Prefisso CIDR</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Classe A</td>
+                <td>10.0.0.0 - 10.255.255.255</td>
+                <td>10.0.0.0/8</td>
+            </tr>
+            <tr>
+                <td>Classe B</td>
+                <td>172.16.0.0 - 172.31.255.255</td>
+                <td>172.16.0.0/12</td>
+            </tr>
+            <tr>
+                <td>Classe C</td>
+                <td>192.168.0.0 - 192.168.255.255</td>
+                <td>192.168.0.0/16</td>
+            </tr>
+        </tbody>
+    </table>
+</section>
+
+<section class="info-box">
+    <h2>3. Architettura DMZ (Demilitarized Zone)</h2>
+    <p>La DMZ è strutturalmente una sottorete isolata. Ecco come gestisce gli IP:</p>
+    <ul>
+        <li><strong>Server in DMZ:</strong> Possiedono un IP privato (es. 172.16.1.10), ma il Firewall esegue un <em>Static NAT</em> associandolo a un IP pubblico univoco per permettere agli utenti esterni di raggiungere il sito web.</li>
+        <li><strong>Sicurezza:</strong> Se un server in DMZ viene compromesso, il firewall impedisce all'attaccante di saltare (pivot) verso la rete interna (LAN), dove risiedono i dati sensibili.</li>
+    </ul>
+
+    <div class="diagram-container">
+        <p class="diagram-placeholder">[Immagine: Schema di rete con Router, Switch, LAN Interna, Internet e DMZ]</p>
+        <p><small>In uno scenario Cisco Packet Tracer, vedresti un router con tre interfacce attive, ognuna con un gateway appartenente a subnet diverse.</small></p>
+    </div>
+</section>
+
+<footer class="rfc-reference">
+    <strong>Riferimento Scientifico:</strong> Per approfondimenti, consultare la 
+    <a href="https://datatracker.ietf.org/doc/html/rfc1918" target="_blank">RFC 1918 - Address Allocation for Private Internets</a>.
+</footer>
+
+</body>
+</html>
